@@ -37,7 +37,7 @@ Welcome to **SM Photography** – a modern and responsive photography portfolio 
 
 Feel free to connect or collaborate!
 
-- 📧 anil@example.com
+- 📧 aniljiragyale213@gmail.com
 - 💼 [LinkedIn](https://linkedin.com/in/aniljiragyale)
 
 ---
