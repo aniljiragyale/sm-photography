@@ -17,6 +17,15 @@ The app runs at `http://localhost:3000`.
 
 Set the Vercel **Root Directory** to `sm-photography`, then use the detected Next.js framework and deploy from the `master` branch. If the Root Directory is left at the repository root, use the root build command `npm run build`.
 
+### Enable shared admin updates
+
+The admin editor publishes package and service changes through `/api/content`. To make those changes visible to every visitor, connect an **Upstash Redis** integration to the Vercel project. Vercel will provide these environment variables automatically:
+
+- `UPSTASH_REDIS_REST_URL`
+- `UPSTASH_REDIS_REST_TOKEN`
+
+After connecting the integration, redeploy the `master` branch. Without this storage connection, the editor can only save changes in the current browser.
+
 ## Project Structure
 
 - **HTML** – Semantic markup for a well-structured layout

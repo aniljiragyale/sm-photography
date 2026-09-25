@@ -18,6 +18,11 @@ export type ServiceItem = {
   deliverables: string;
 };
 
+export type PublishedContent = {
+  packages: PackageItem[];
+  services: ServiceItem[];
+};
+
 export const ADMIN_PASSWORD = 'smphotography';
 export const ADMIN_LOGIN_KEY = 'sm_admin_logged_in';
 export const ADMIN_GALLERY_KEY = 'sm_admin_gallery_items';
@@ -136,4 +141,44 @@ export function resetContent(): void {
   if (typeof window === 'undefined') return;
   window.localStorage.removeItem(ADMIN_PACKAGES_KEY);
   window.localStorage.removeItem(ADMIN_SERVICES_KEY);
+}
+
+export async function loadPublishedContent(): Promise<PublishedContent> {
+  try {
+    const response = await fetch('/api/content', { cache: 'no-store' });
+    if (!response.ok) throw new Error('Content request failed');
+    return (await response.json()) as PublishedContent;
+  } catch {
+    return { packages: getPackages(), services: getServices() };
+  }
+}
+
+export async function savePublishedContent(content: PublishedContent, password: string): Promise<boolean> {
+  savePackages(content.packages);
+  saveServices(content.services);
+
+  try {
+    const response = await fetch('/api/content', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-admin-password': password },
+      body: JSON.stringify(content),
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
+}
+
+export async function resetPublishedContent(password: string): Promise<boolean> {
+  resetContent();
+
+  try {
+    const response = await fetch('/api/content', {
+      method: 'DELETE',
+      headers: { 'x-admin-password': password },
+    });
+    return response.ok;
+  } catch {
+    return false;
+  }
 }

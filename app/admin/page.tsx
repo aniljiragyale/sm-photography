@@ -5,17 +5,16 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import {
   galleryCategories,
+  ADMIN_PASSWORD,
   getAllGalleryItems,
   getCustomGalleryItems,
   defaultPackages,
   defaultServices,
-  getPackages,
-  getServices,
   isAdminLoggedIn,
-  resetContent,
+  loadPublishedContent,
+  resetPublishedContent,
   saveCustomGalleryItems,
-  savePackages,
-  saveServices,
+  savePublishedContent,
   setAdminLoggedIn,
   type GalleryItem,
   type PackageItem,
@@ -46,8 +45,10 @@ export default function AdminPage() {
     }
 
     setItems(getAllGalleryItems());
-    setPackages(getPackages());
-    setServices(getServices());
+    loadPublishedContent().then((content) => {
+      setPackages(content.packages);
+      setServices(content.services);
+    });
     setIsReady(true);
   }, [router]);
 
@@ -109,21 +110,24 @@ export default function AdminPage() {
     router.push('/');
   };
 
-  const saveContent = () => {
+  const saveContent = async () => {
     const validPackages = packages.filter((item) => item.name.trim() && item.price.trim());
     const validServices = services.filter((item) => item.title.trim() && item.description.trim());
-    savePackages(validPackages.map((item) => ({ ...item, name: item.name.trim(), price: item.price.trim(), items: item.items.filter(Boolean) })));
-    saveServices(validServices.map((item) => ({ ...item, title: item.title.trim(), description: item.description.trim(), deliverables: item.deliverables.trim() })));
-    setPackages(getPackages());
-    setServices(getServices());
-    setMessage('Packages and services updated on the public pages.');
+    const content = {
+      packages: validPackages.map((item) => ({ ...item, name: item.name.trim(), price: item.price.trim(), items: item.items.filter(Boolean) })),
+      services: validServices.map((item) => ({ ...item, title: item.title.trim(), description: item.description.trim(), deliverables: item.deliverables.trim() })),
+    };
+    const isPublished = await savePublishedContent(content, ADMIN_PASSWORD);
+    setPackages(content.packages);
+    setServices(content.services);
+    setMessage(isPublished ? 'Packages and services published successfully.' : 'Saved on this device. Connect Vercel shared storage to publish for everyone.');
   };
 
-  const restoreContent = () => {
-    resetContent();
+  const restoreContent = async () => {
+    const isPublished = await resetPublishedContent(ADMIN_PASSWORD);
     setPackages(defaultPackages);
     setServices(defaultServices);
-    setMessage('Packages and services restored to the original content.');
+    setMessage(isPublished ? 'Packages and services restored for everyone.' : 'Restored on this device. Connect Vercel shared storage to publish for everyone.');
   };
 
   if (!isReady) {

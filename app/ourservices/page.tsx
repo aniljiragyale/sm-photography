@@ -2,12 +2,14 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { defaultServices, getServices, type ServiceItem } from '@/lib/admin-data';
+import { defaultServices, loadPublishedContent, type ServiceItem } from '@/lib/admin-data';
 
 export default function ServicesPage() {
   const [services, setServices] = useState<ServiceItem[]>(defaultServices);
 
-  useEffect(() => setServices(getServices()), []);
+  useEffect(() => {
+    loadPublishedContent().then((content) => setServices(content.services));
+  }, []);
 
   return (
     <div className="page-shell">

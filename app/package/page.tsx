@@ -2,12 +2,14 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { defaultPackages, getPackages, type PackageItem } from '@/lib/admin-data';
+import { defaultPackages, loadPublishedContent, type PackageItem } from '@/lib/admin-data';
 
 export default function PackagePage() {
   const [packages, setPackages] = useState<PackageItem[]>(defaultPackages);
 
-  useEffect(() => setPackages(getPackages()), []);
+  useEffect(() => {
+    loadPublishedContent().then((content) => setPackages(content.packages));
+  }, []);
 
   return (
     <div className="page-shell">
