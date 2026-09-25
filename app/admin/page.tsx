@@ -7,10 +7,19 @@ import {
   galleryCategories,
   getAllGalleryItems,
   getCustomGalleryItems,
+  defaultPackages,
+  defaultServices,
+  getPackages,
+  getServices,
   isAdminLoggedIn,
+  resetContent,
   saveCustomGalleryItems,
+  savePackages,
+  saveServices,
   setAdminLoggedIn,
   type GalleryItem,
+  type PackageItem,
+  type ServiceItem,
 } from '@/lib/admin-data';
 
 const initialForm = {
@@ -25,6 +34,8 @@ export default function AdminPage() {
   const [isReady, setIsReady] = useState(false);
   const [form, setForm] = useState(initialForm);
   const [items, setItems] = useState<GalleryItem[]>([]);
+  const [packages, setPackages] = useState<PackageItem[]>(defaultPackages);
+  const [services, setServices] = useState<ServiceItem[]>(defaultServices);
   const [message, setMessage] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -35,6 +46,8 @@ export default function AdminPage() {
     }
 
     setItems(getAllGalleryItems());
+    setPackages(getPackages());
+    setServices(getServices());
     setIsReady(true);
   }, [router]);
 
@@ -94,6 +107,23 @@ export default function AdminPage() {
   const logout = () => {
     setAdminLoggedIn(false);
     router.push('/');
+  };
+
+  const saveContent = () => {
+    const validPackages = packages.filter((item) => item.name.trim() && item.price.trim());
+    const validServices = services.filter((item) => item.title.trim() && item.description.trim());
+    savePackages(validPackages.map((item) => ({ ...item, name: item.name.trim(), price: item.price.trim(), items: item.items.filter(Boolean) })));
+    saveServices(validServices.map((item) => ({ ...item, title: item.title.trim(), description: item.description.trim(), deliverables: item.deliverables.trim() })));
+    setPackages(getPackages());
+    setServices(getServices());
+    setMessage('Packages and services updated on the public pages.');
+  };
+
+  const restoreContent = () => {
+    resetContent();
+    setPackages(defaultPackages);
+    setServices(defaultServices);
+    setMessage('Packages and services restored to the original content.');
   };
 
   if (!isReady) {
@@ -214,6 +244,43 @@ export default function AdminPage() {
                   </div>
                 ))
               )}
+            </div>
+          </section>
+
+          <section className="admin-card admin-content-editor">
+            <div className="admin-card-heading">
+              <div>
+                <h2>Packages and services</h2>
+                <p className="form-note">Edit the text shown on the public Packages and Our Services pages.</p>
+              </div>
+              <div className="admin-actions">
+                <button type="button" className="btn btn-secondary" onClick={restoreContent}>Restore defaults</button>
+                <button type="button" className="submit-btn" onClick={saveContent}>Save changes</button>
+              </div>
+            </div>
+
+            <h3 className="admin-section-title">Packages</h3>
+            <div className="content-editor-list">
+              {packages.map((item, index) => (
+                <div className="content-editor-item" key={`package-${index}`}>
+                  <div className="grid-form two-column-form">
+                    <label>Package name<input className="field" value={item.name} onChange={(event) => setPackages((current) => current.map((entry, itemIndex) => itemIndex === index ? { ...entry, name: event.target.value } : entry))} /></label>
+                    <label>Price<input className="field" value={item.price} onChange={(event) => setPackages((current) => current.map((entry, itemIndex) => itemIndex === index ? { ...entry, price: event.target.value } : entry))} /></label>
+                  </div>
+                  <label>What is included<textarea className="field" rows={4} value={item.items.join('\n')} onChange={(event) => setPackages((current) => current.map((entry, itemIndex) => itemIndex === index ? { ...entry, items: event.target.value.split('\n') } : entry))} /></label>
+                </div>
+              ))}
+            </div>
+
+            <h3 className="admin-section-title">Services</h3>
+            <div className="content-editor-list">
+              {services.map((item, index) => (
+                <div className="content-editor-item" key={`service-${index}`}>
+                  <label>Service title<input className="field" value={item.title} onChange={(event) => setServices((current) => current.map((entry, itemIndex) => itemIndex === index ? { ...entry, title: event.target.value } : entry))} /></label>
+                  <label>Description<textarea className="field" rows={4} value={item.description} onChange={(event) => setServices((current) => current.map((entry, itemIndex) => itemIndex === index ? { ...entry, description: event.target.value } : entry))} /></label>
+                  <label>What the client receives<textarea className="field" rows={3} value={item.deliverables} onChange={(event) => setServices((current) => current.map((entry, itemIndex) => itemIndex === index ? { ...entry, deliverables: event.target.value } : entry))} /></label>
+                </div>
+              ))}
             </div>
           </section>
         </div>

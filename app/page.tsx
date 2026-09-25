@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const galleryMoments = [
   {
     title: 'Wedding Moments',
@@ -94,15 +96,15 @@ export default function HomePage() {
               beauty become treasured memories.
             </p>
             <div className="header-buttons">
-              <a href="/package" className="btn btn-primary">
+              <Link href="/package" className="btn btn-primary">
                 Packages
-              </a>
-              <a href="/ourservices" className="btn btn-secondary">
+              </Link>
+              <Link href="/ourservices" className="btn btn-secondary">
                 Our Services
-              </a>
-              <a href="/booknow" className="btn btn-accent">
+              </Link>
+              <Link href="/booknow" className="btn btn-accent">
                 Book Now Session
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -160,9 +162,9 @@ export default function HomePage() {
         <div className="visit-gallery">
           <h2>Visit Our Full Gallery</h2>
           <p>Experience the complete collection of our photography — from weddings to lifestyle, every image is a piece of art.</p>
-          <a href="/gallery" className="btn btn-primary">
+          <Link href="/gallery" className="btn btn-primary">
             Explore Gallery
-          </a>
+          </Link>
         </div>
       </section>
 
@@ -206,9 +208,9 @@ export default function HomePage() {
             <p className="eyebrow">Let’s create your story</p>
             <h2>Your perfect moments deserve the perfect frame.</h2>
           </div>
-          <a href="/contact" className="btn btn-primary">
+          <Link href="/contact" className="btn btn-primary">
             Contact Us
-          </a>
+          </Link>
         </div>
       </section>
 

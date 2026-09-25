@@ -6,11 +6,46 @@ export type GalleryItem = {
   description?: string;
 };
 
+export type PackageItem = {
+  name: string;
+  price: string;
+  items: string[];
+};
+
+export type ServiceItem = {
+  title: string;
+  description: string;
+  deliverables: string;
+};
+
 export const ADMIN_PASSWORD = 'smphotography';
 export const ADMIN_LOGIN_KEY = 'sm_admin_logged_in';
 export const ADMIN_GALLERY_KEY = 'sm_admin_gallery_items';
+export const ADMIN_PACKAGES_KEY = 'sm_admin_packages';
+export const ADMIN_SERVICES_KEY = 'sm_admin_services';
 
 export const galleryCategories = ['all', 'wedding', 'prewedding', 'engagement', 'maternity', 'candid', 'modeling'];
+
+export const defaultPackages: PackageItem[] = [
+  { name: 'Silver Package', price: '₹30,000', items: ['Traditional Photographer', 'Traditional Videographer', '20-Page Photobook Album', 'Video Editing and Reels', '12x36 NT HD Photobook Album'] },
+  { name: 'Gold Package', price: '₹50,000', items: ['Traditional Photographer', 'Traditional Videographer', 'Candid Photographer', '25-Page Photobook Album', 'Video Editing with Highlights + Reel', '12x36 NT HD Photobook Album'] },
+  { name: 'Diamond Package', price: '₹70,000', items: ['Traditional Photographer', 'Traditional Videographer', 'Candid Photographer', 'Cinematic Videographer', '30-Page Photobook Album', 'Video Editing with Highlights Reel', 'Unlimited Photos', '12x36 NT HD Photobook Album'] },
+  { name: 'Pre-Wedding Package', price: '₹45,000', items: ['Candid Photography', 'Cinematic Videography + Drone', 'Teaser Video + Reel + Highlight (4K / Full HD Video)'] },
+  { name: 'Maternity Package', price: '₹10,000', items: ['1 Day Rate', 'Candid Photography (25-30 Edited Photos + All RAW Soft Copy + Reel)'] },
+  { name: 'Terms & Conditions', price: 'Flexible', items: ['75% payment in advance', 'Transportation and location charges separately', 'Stay and dinner managed by clients'] },
+];
+
+export const defaultServices: ServiceItem[] = [
+  { title: 'Wedding Shoot', description: 'A complete visual story of your wedding, from preparations and rituals to the reception. We balance candid emotion, family portraits, couple direction, and detail photography.', deliverables: 'Candid coverage, family portraits, couple portraits, rituals, edited gallery, and album-ready selections.' },
+  { title: 'Pre-Wedding Shoot', description: 'Relaxed, location-based sessions built around your chemistry and personality. We help with concepts, styling, locations, and natural posing.', deliverables: 'Concept planning, location guidance, edited portraits, cinematic frames, and social-media reels.' },
+  { title: 'Cinematic Videography', description: 'Story-led wedding and event films with thoughtful camera movement, clean sound, emotional pacing, and polished editing.', deliverables: 'Teaser film, highlight edit, full-event coverage options, reels, and music-synced storytelling.' },
+  { title: 'Maternity Photography', description: 'Gentle portraits that celebrate pregnancy with soft light, comfortable direction, and intimate family moments.', deliverables: 'Wardrobe guidance, location or home session, individual portraits, couple portraits, and edited keepsakes.' },
+  { title: 'Outdoor Sessions', description: 'Natural-light portraits designed around golden hour, meaningful locations, scenic backdrops, and an easy-going experience.', deliverables: 'Location planning, creative direction, natural posing, edited gallery, and print-ready images.' },
+  { title: 'Event Coverage', description: 'Reliable coverage for birthdays, engagements, anniversaries, cultural celebrations, and corporate gatherings.', deliverables: 'Guest moments, decor and details, group portraits, candid reactions, and a curated final gallery.' },
+  { title: 'Candid Photography', description: 'Unobtrusive photography focused on genuine expressions, laughter, tears, movement, and the moments people often miss.', deliverables: 'Natural storytelling, reaction photography, candid portraits, and carefully edited high-resolution images.' },
+  { title: 'Modeling Portfolios', description: 'Portfolio sessions that present your personality and range with clear direction, considered lighting, and strong visual framing.', deliverables: 'Mood-board planning, pose direction, outfit guidance, editorial portraits, and portfolio-ready selects.' },
+  { title: 'Drone Shoot', description: 'Aerial photography and video that add scale and cinematic perspective to venues, outdoor celebrations, properties, and destinations.', deliverables: 'Aerial establishing shots, venue perspectives, cinematic clips, and coordinated ground-and-air storytelling.' },
+];
 
 export const defaultGalleryItems: GalleryItem[] = [
   { id: 'wedding-1', title: 'Elegant Wedding', category: 'wedding', image: '/images/IMG_2887.JPG', description: 'Timeless wedding frames with warmth and emotion.' },
@@ -68,4 +103,37 @@ export function getAllGalleryItems(): GalleryItem[] {
 export function saveCustomGalleryItems(items: GalleryItem[]): void {
   if (typeof window === 'undefined') return;
   window.localStorage.setItem(ADMIN_GALLERY_KEY, JSON.stringify(items));
+}
+
+function getSavedContent<T>(key: string, fallback: T): T {
+  if (typeof window === 'undefined') return fallback;
+
+  try {
+    const saved = window.localStorage.getItem(key);
+    return saved ? (JSON.parse(saved) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+export function getPackages(): PackageItem[] {
+  return getSavedContent(ADMIN_PACKAGES_KEY, defaultPackages);
+}
+
+export function savePackages(packages: PackageItem[]): void {
+  if (typeof window !== 'undefined') window.localStorage.setItem(ADMIN_PACKAGES_KEY, JSON.stringify(packages));
+}
+
+export function getServices(): ServiceItem[] {
+  return getSavedContent(ADMIN_SERVICES_KEY, defaultServices);
+}
+
+export function saveServices(services: ServiceItem[]): void {
+  if (typeof window !== 'undefined') window.localStorage.setItem(ADMIN_SERVICES_KEY, JSON.stringify(services));
+}
+
+export function resetContent(): void {
+  if (typeof window === 'undefined') return;
+  window.localStorage.removeItem(ADMIN_PACKAGES_KEY);
+  window.localStorage.removeItem(ADMIN_SERVICES_KEY);
 }
