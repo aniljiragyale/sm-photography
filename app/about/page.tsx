@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const strengths = [
   {
     title: 'Story-driven approach',
@@ -25,6 +27,9 @@ export default function AboutPage() {
   return (
     <div className="page-shell">
       <div className="page-header">
+        <div className="page-actions page-actions-top">
+          <Link href="/" className="page-back">← Back</Link>
+        </div>
         <p className="eyebrow">About the artist</p>
         <h1>About Me</h1>
       </div>

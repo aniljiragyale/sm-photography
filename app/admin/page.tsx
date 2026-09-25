@@ -104,6 +104,9 @@ export default function AdminPage() {
     <div className="page-shell admin-shell">
       <div className="page-header admin-header-row">
         <div>
+          <div className="page-actions page-actions-top">
+            <Link href="/" className="page-back">← Back</Link>
+          </div>
           <p className="eyebrow">Private dashboard</p>
           <h1>Admin Panel</h1>
         </div>

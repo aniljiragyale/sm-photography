@@ -1,48 +1,59 @@
+import Link from 'next/link';
+
 const services = [
   {
     title: 'Wedding Shoot',
     description:
-      'Capturing the essence and joy of your wedding day through candid moments, elegant poses, and unforgettable details.',
+      'A complete visual story of your wedding, from preparations and rituals to the reception. We balance candid emotion, family portraits, couple direction, and detail photography.',
+    deliverables: 'Candid coverage, family portraits, couple portraits, rituals, edited gallery, and album-ready selections.',
   },
   {
     title: 'Pre-Wedding Shoot',
     description:
-      'Romantic, story-rich sessions that highlight your bond with cinematic compositions and natural emotion.',
+      'Relaxed, location-based sessions built around your chemistry and personality. We help with concepts, styling, locations, and natural posing.',
+    deliverables: 'Concept planning, location guidance, edited portraits, cinematic frames, and social-media reels.',
   },
   {
     title: 'Cinematic Videography',
     description:
-      'High-quality storytelling videos with dynamic edits, emotional pacing, and memorable highlights.',
+      'Story-led wedding and event films with thoughtful camera movement, clean sound, emotional pacing, and polished editing.',
+    deliverables: 'Teaser film, highlight edit, full-event coverage options, reels, and music-synced storytelling.',
   },
   {
     title: 'Maternity Photography',
     description:
-      'Celebrate the journey of motherhood through intimate portraits that feel graceful, warm, and deeply personal.',
+      'Gentle portraits that celebrate pregnancy with soft light, comfortable direction, and intimate family moments.',
+    deliverables: 'Wardrobe guidance, location or home session, individual portraits, couple portraits, and edited keepsakes.',
   },
   {
     title: 'Outdoor Sessions',
     description:
-      'Natural-light and landscape-driven portraits that add atmosphere, depth, and timeless beauty to every frame.',
+      'Natural-light portraits designed around golden hour, meaningful locations, scenic backdrops, and an easy-going experience.',
+    deliverables: 'Location planning, creative direction, natural posing, edited gallery, and print-ready images.',
   },
   {
     title: 'Event Coverage',
     description:
-      'Comprehensive coverage for birthdays, anniversaries, and special gatherings, preserving the soul of the day.',
+      'Reliable coverage for birthdays, engagements, anniversaries, cultural celebrations, and corporate gatherings.',
+    deliverables: 'Guest moments, decor and details, group portraits, candid reactions, and a curated final gallery.',
   },
   {
     title: 'Candid Photography',
     description:
-      'Authentic, emotion-filled photographs that keep your genuine smiles, intimate moments, and spontaneous joy.',
+      'Unobtrusive photography focused on genuine expressions, laughter, tears, movement, and the moments people often miss.',
+    deliverables: 'Natural storytelling, reaction photography, candid portraits, and carefully edited high-resolution images.',
   },
   {
     title: 'Modeling Portfolios',
     description:
-      'Polished styling and creative direction for ambitious models and personal brands seeking standout visuals.',
+      'Portfolio sessions that present your personality and range with clear direction, considered lighting, and strong visual framing.',
+    deliverables: 'Mood-board planning, pose direction, outfit guidance, editorial portraits, and portfolio-ready selects.',
   },
   {
     title: 'Drone Shoot',
     description:
-      'Aerial perspectives that add drama, scale, and cinematic beauty especially for outdoor events and destination shoots.',
+      'Aerial photography and video that add scale and cinematic perspective to venues, outdoor celebrations, properties, and destinations.',
+    deliverables: 'Aerial establishing shots, venue perspectives, cinematic clips, and coordinated ground-and-air storytelling.',
   },
 ];
 
@@ -50,8 +61,12 @@ export default function ServicesPage() {
   return (
     <div className="page-shell">
       <div className="page-header">
+        <div className="page-actions page-actions-top">
+          <Link href="/" className="page-back">← Back</Link>
+        </div>
         <p className="eyebrow">Creative studio services</p>
         <h1>Our Services</h1>
+        <p>Thoughtful photography and film coverage for celebrations, people, brands, and the stories in between.</p>
       </div>
 
       <div className="page-content">
@@ -60,6 +75,7 @@ export default function ServicesPage() {
             <div key={service.title} className="service-card-plain">
               <h3>{service.title}</h3>
               <p>{service.description}</p>
+              <p className="service-deliverables"><strong>What you receive:</strong> {service.deliverables}</p>
             </div>
           ))}
         </div>

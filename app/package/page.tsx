@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 const packages = [
   {
     name: 'Silver Package',
@@ -35,6 +37,9 @@ export default function PackagePage() {
   return (
     <div className="page-shell">
       <div className="page-header">
+        <div className="page-actions page-actions-top">
+          <Link href="/" className="page-back">← Back</Link>
+        </div>
         <p className="eyebrow">Photography plans</p>
         <h1>Photography Packages</h1>
       </div>

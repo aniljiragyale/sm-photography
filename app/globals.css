@@ -489,6 +489,17 @@ main {
   font-size: 0.96rem;
 }
 
+.service-deliverables {
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.85rem !important;
+}
+
+.service-deliverables strong {
+  color: #86621e;
+}
+
 .cta-banner {
   background: linear-gradient(135deg, rgba(255, 209, 90, 0.08), rgba(255, 255, 255, 0.02));
   border-top: 1px solid var(--line);

@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+import Link from 'next/link';
 import { galleryCategories, getAllGalleryItems } from '@/lib/admin-data';
 
 export default function GalleryPage() {
@@ -15,6 +16,9 @@ export default function GalleryPage() {
   return (
     <div className="page-shell">
       <div className="page-header">
+        <div className="page-actions page-actions-top">
+          <Link href="/" className="page-back">← Back</Link>
+        </div>
         <p className="eyebrow">Portfolio</p>
         <h1>Explore Beautiful Moments</h1>
       </div>
