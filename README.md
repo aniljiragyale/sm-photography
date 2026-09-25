@@ -15,7 +15,7 @@ The app runs at `http://localhost:3000`.
 
 ## Deploy on Vercel
 
-Set the Vercel **Root Directory** to `sm-photography`, then use the detected Next.js framework and deploy from the `master` branch. If the Root Directory is left at the repository root, use the root build command `npm run build`.
+Leave the Vercel **Root Directory** at the repository root, use the detected Next.js framework, and deploy from the `master` branch. The build and install commands are already configured in `vercel.json`.
 
 ### Enable shared admin updates
 
