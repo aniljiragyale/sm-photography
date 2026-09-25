@@ -19,7 +19,7 @@ Set the Vercel **Root Directory** to `sm-photography`, then use the detected Nex
 
 ### Enable shared admin updates
 
-The admin editor publishes package and service changes through `/api/content`. To make those changes visible to every visitor, connect an **Upstash Redis** integration to the Vercel project. Vercel will provide these environment variables automatically:
+The admin editor publishes package and service changes through `/api/content`. Connect an **Upstash Redis** integration to the Vercel project so these environment variables are available:
 
 - `UPSTASH_REDIS_REST_URL`
 - `UPSTASH_REDIS_REST_TOKEN`
