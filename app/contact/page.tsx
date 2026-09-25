@@ -2,22 +2,27 @@
 
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
+import { getEmailErrorMessage, sendEnquiryEmail } from '@/lib/email';
 
 export default function ContactPage() {
   const [status, setStatus] = useState('');
+  const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const name = (form.elements.namedItem('name') as HTMLInputElement)?.value || 'Client';
-    const email = (form.elements.namedItem('email') as HTMLInputElement)?.value || '';
-    const message = (form.elements.namedItem('message') as HTMLTextAreaElement)?.value || '';
+    setIsSending(true);
+    setStatus('Sending your message...');
 
-    const mailtoLink = `mailto:smphotography5207@gmail.com?subject=${encodeURIComponent(`New enquiry from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`)}`;
-
-    window.location.href = mailtoLink;
-    setStatus('Your email app is opening with a pre-filled message.');
-    form.reset();
+    try {
+      await sendEnquiryEmail(form);
+      setStatus('Message sent successfully. We will get back to you soon.');
+      form.reset();
+    } catch (error) {
+      setStatus(`Message could not be sent: ${getEmailErrorMessage(error)}`);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -60,10 +65,13 @@ export default function ContactPage() {
         <div className="form-section">
           <h3 style={{ color: 'var(--gold)', marginBottom: '1rem' }}>Send a Message</h3>
           <form className="form-grid" onSubmit={handleSubmit}>
-            <input className="field" type="text" name="name" placeholder="Your name" required />
-            <input className="field" type="email" name="email" placeholder="Your email" required />
+            <input className="field" type="text" name="user_name" placeholder="Your name" required />
+            <input className="field" type="email" name="user_email" placeholder="Your email" required />
+            <input className="field" type="tel" name="user_phone" placeholder="Your phone number" required />
             <textarea className="form-field" name="message" placeholder="Tell us about your shoot, event, or question..." rows={5} required />
-            <button type="submit" className="submit-btn">Send Message</button>
+            <button type="submit" className="submit-btn" disabled={isSending}>
+              {isSending ? 'Sending...' : 'Send Message'}
+            </button>
             <div className="form-status">{status}</div>
           </form>
         </div>

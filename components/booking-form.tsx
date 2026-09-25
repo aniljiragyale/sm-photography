@@ -1,28 +1,33 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
+import { getEmailErrorMessage, sendBookingEmail } from '@/lib/email';
 
 export function BookingForm() {
   const [status, setStatus] = useState('');
   const [eventType, setEventType] = useState('');
   const [packageTier, setPackageTier] = useState('');
   const [referral, setReferral] = useState('');
+  const [isSending, setIsSending] = useState(false);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const payload = new FormData(form);
-    const details = Array.from(payload.entries())
-      .map(([key, value]) => `${key}: ${value}`)
-      .join('\n');
+    setIsSending(true);
+    setStatus('Sending your booking request...');
 
-    const mailtoLink = `mailto:smphotography5207@gmail.com?subject=${encodeURIComponent('New booking request')}&body=${encodeURIComponent(details)}`;
-    window.location.href = mailtoLink;
-    setStatus('Your booking request is ready to send in your email app.');
-    form.reset();
-    setEventType('');
-    setPackageTier('');
-    setReferral('');
+    try {
+      await sendBookingEmail(form);
+      setStatus('Booking request sent successfully. We will get back to you soon.');
+      form.reset();
+      setEventType('');
+      setPackageTier('');
+      setReferral('');
+    } catch (error) {
+      setStatus(`Booking request could not be sent: ${getEmailErrorMessage(error)}`);
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -111,7 +116,9 @@ export function BookingForm() {
         )}
       </div>
 
-      <button type="submit" className="submit-btn">Send Request</button>
+      <button type="submit" className="submit-btn" disabled={isSending}>
+        {isSending ? 'Sending...' : 'Send Request'}
+      </button>
       <div className="form-status">{status}</div>
     </form>
   );

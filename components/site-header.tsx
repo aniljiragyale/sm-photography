@@ -5,8 +5,8 @@ import { useState } from 'react';
 
 const navItems = [
   { href: '/portfolio', label: 'Enquiry' },
-  { href: '/about', label: 'About Me' },
   { href: '/contact', label: 'Contact' },
+  { href: '/about', label: 'About Me' },
   { href: '/admin/login', label: 'Admin Login' },
 ];
 
@@ -28,6 +28,7 @@ export function SiteHeader() {
             type="button"
             className="menu-toggle"
             aria-label="Toggle menu"
+            aria-expanded={isOpen}
             onClick={() => setIsOpen((prev) => !prev)}
           >
             ☰
