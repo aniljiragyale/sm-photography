@@ -1,5 +1,5 @@
 /* Theme version: light editorial refresh */
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
 
 :root {
   --bg: #f7f7f5;
@@ -27,7 +27,7 @@ html {
 
 body {
   margin: 0;
-  font-family: 'DM Sans', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.55;
@@ -1390,7 +1390,6 @@ h3,
 .service-card-plain h3,
 .package-card h3,
 .gallery-card h3 {
-  font-family: 'Playfair Display', Georgia, serif;
   color: #252825;
 }
 
